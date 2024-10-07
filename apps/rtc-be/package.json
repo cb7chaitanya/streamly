@@ -1,0 +1,11 @@
+{
+  "name": "rtc-be-project",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "tsc -b && node dist/index.js",
+    "rtc-be": "cd apps/rtc-be && npm run dev"
+  },
+  "devDependencies": {
+    "typescript": "^4.0.0"
+  }
+}
