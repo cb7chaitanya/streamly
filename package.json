@@ -21,6 +21,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "@prisma/client": "^5.20.0",
     "turbo-lang-init": "^1.1.1"
   }
 }
