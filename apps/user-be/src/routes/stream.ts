@@ -8,6 +8,6 @@ streamRouter.get('/user/:userId', getStreamsByUser)
 streamRouter.get('/:streamId', getStreamById)
 streamRouter.put('/:streamId', streamUpdateStatus)
 streamRouter.delete('/:streamId', deleteStream)
-streamRouter.get('/user/:userId', getUserStreams)
+streamRouter.get('/:userId', getUserStreams)
 
 export default streamRouter
