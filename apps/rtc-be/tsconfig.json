@@ -1,7 +1,10 @@
 {
     "compilerOptions": {
       "target": "ES6",
-      "module": "commonjs",
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "allowImportingTsExtensions": true,
+      "noEmit": true,
       "strict": true,
       "esModuleInterop": true,
       "rootDir": "./src",
@@ -13,4 +16,4 @@
     "exclude": [
       "node_modules"
     ]
-  }
+}
