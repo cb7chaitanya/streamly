@@ -1,4 +1,4 @@
-import prisma from "../../../../packages/db/db";
+import prisma from "@repo/db/client";
 import { Response, Request } from "express";
 import { AuthRequest } from "../middleware/auth";
 import { streamSchema, streamUpdateSchema } from "../zod/stream";

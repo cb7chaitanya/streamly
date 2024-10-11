@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
-import prisma from "../../../../packages/db/db";
+import prisma from "@repo/db/client";
 import bcrypt from "bcrypt";
 import { signinSchema, signupSchema } from "../zod/user";
 import { JWT_SECRET } from "../conf";
@@ -31,7 +31,7 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
       },
     });
     const userId = user.id;
-    const token = jwt.sign({ userId }, JWT_SECRET);
+    const token = jwt.sign({ userId }, JWT_SECRET || 'secret');
     res.cookie("token", token);
     res.status(200).json({
       message: "User created successfully",
@@ -66,7 +66,7 @@ export const signin = async (req: Request, res: Response): Promise<void> => {
       return;
     }
     const userId = user.id;
-    const token = jwt.sign({ userId }, JWT_SECRET);
+    const token = jwt.sign({ userId }, JWT_SECRET || 'secret');
     res.cookie("token", token);
     res.status(200).json({
       message: "User signed in successfully",
