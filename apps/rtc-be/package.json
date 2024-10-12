@@ -12,9 +12,11 @@
   },
   "dependencies": {
     "@repo/validator": "^1.0.0",
+    "@repo/db": "*",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "ffmpeg-static": "^5.2.0",
+    "jsonwebtoken": "^9.0.2",
     "ws": "^8.18.0"
   }
 }
