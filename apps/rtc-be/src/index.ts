@@ -6,6 +6,7 @@ import { Message } from './types.ts'
 import { Readable } from 'stream'
 import { ChildProcessWithoutNullStreams } from 'child_process'
 import { messageSchema } from '@repo/validator/client'
+import authenticateUpgrade from './auth.ts'
 
 const app = express()
 const port = 8080
@@ -22,7 +23,8 @@ wss.on('connection', (ws) => {
         const { success } = messageSchema.safeParse(message)
         if(!success) {
             console.error('Invalid message:', message)
-            process.exit(1);
+            ws.send('Invalid message format:')
+            return;
         }
         const { rtmpUrl, streamData } = message
         console.log('Received stream data from client:', streamData)
@@ -53,8 +55,10 @@ const server = app.listen(port, () => {
     console.log(`Streaming server listening on port ${port}`)
 })
 
-server.on('upgrade', (req:Request, socket, head) => {
-    wss.handleUpgrade(req, socket, head, (ws) => {
-        wss.emit('connection', ws, req)
-    })
+server.on('upgrade', (req:Request, socket, head: Buffer) => {
+    authenticateUpgrade(req, socket, head, () => {
+        wss.handleUpgrade(req, socket, head, (ws) => {
+            wss.emit('connection', ws, req)
+        })
+    })  
 })
