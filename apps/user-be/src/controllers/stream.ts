@@ -1,7 +1,7 @@
 import prisma from "@repo/db/client";
 import { Response, Request } from "express";
-import { AuthRequest } from "../middleware/auth";
-import { streamSchema, streamUpdateSchema } from "../zod/stream";
+import { AuthRequest } from "../middleware/auth.js";
+import { streamSchema, streamUpdateSchema } from "@repo/validator/client";
 
 export const createStream = async (req: AuthRequest, res: Response) => {
     const { title } = req.body;

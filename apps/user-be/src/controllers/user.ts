@@ -2,8 +2,8 @@ import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import prisma from "@repo/db/client";
 import bcrypt from "bcrypt";
-import { signinSchema, signupSchema } from "../zod/user";
-import { JWT_SECRET } from "../conf";
+import { signinSchema, signupSchema } from "@repo/validator/client";
+import { JWT_SECRET } from "../conf.js";
 
 export const signup = async (req: Request, res: Response): Promise<void> => {
   try {

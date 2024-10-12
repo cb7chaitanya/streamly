@@ -1,5 +1,5 @@
 import express from 'express'
-import { createStream, getStreamsByUser, getStreamById, streamUpdateStatus, deleteStream, getUserStreams } from '../controllers/stream'
+import { createStream, getStreamsByUser, getStreamById, streamUpdateStatus, deleteStream, getUserStreams } from '../controllers/stream.js'
 
 const streamRouter = express.Router()
 

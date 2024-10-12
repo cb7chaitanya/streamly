@@ -16,6 +16,6 @@
       "prisma": "^5.20.0"
   },
   "exports": {
-      "./client": "./db.ts"
+      "./client": "./dist/db.js"
   }
 }

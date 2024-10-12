@@ -1,6 +1,6 @@
 import express from 'express'
-import userRouter from './user'
-import streamRouter from './stream'
+import userRouter from './user.js'
+import streamRouter from './stream.js'
 
 const primaryRouter = express.Router()
 

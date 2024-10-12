@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import primaryRouter from './routes'
+import primaryRouter from './routes/index.js'
 
 const app = express()
 app.use(express.json())

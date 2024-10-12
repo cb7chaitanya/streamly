@@ -1,17 +1,17 @@
 import express from 'express'
-import WebSocket from 'ws'
+import { WebSocketServer } from 'ws'
 import { Request, Response } from 'express'
-import handleStream from './ffmpeg.ts'
-import { Message } from './types.ts'
+import handleStream from './ffmpeg.js'
+import { Message } from './types.js'
 import { Readable } from 'stream'
 import { ChildProcessWithoutNullStreams } from 'child_process'
 import { messageSchema } from '@repo/validator/client'
-import authenticateUpgrade from './auth.ts'
+import authenticateUpgrade from './auth.js'
 
 const app = express()
 const port = 8080
 
-const wss = new WebSocket.Server({ noServer: true })
+const wss = new WebSocketServer({ noServer: true })
 
 app.use(express.json())
 

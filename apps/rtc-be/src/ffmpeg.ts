@@ -3,7 +3,7 @@ import ffmpegPath from "ffmpeg-static"
 import { Readable } from "stream"
 
 const handleStream = (streamData: Readable, rtmpUrl: string): ChildProcessWithoutNullStreams => {
-    const ffmpeg: ChildProcessWithoutNullStreams = spawn(ffmpegPath.toString(), [
+    const ffmpeg: ChildProcessWithoutNullStreams = spawn(ffmpegPath!.toString(), [
         '-i', 'pipe:0',
         '-f', 'flv',
         '-re',

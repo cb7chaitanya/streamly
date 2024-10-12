@@ -1,6 +1,5 @@
 import { Request } from "express";
-import { WebSocket } from "ws";
-import { JWT_SECRET } from "./conf.ts";
+import { JWT_SECRET } from "./conf.js";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import prisma from "@repo/db/client";
 

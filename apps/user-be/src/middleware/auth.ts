@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 import jwt, { JwtPayload } from "jsonwebtoken"
-import { JWT_SECRET } from "../conf"
-import prisma from "../../../../packages/db/db"
+import { JWT_SECRET } from "../conf.js"
+import prisma from "@repo/db/client"
 
 export interface AuthRequest extends Request {
     userId?: string
