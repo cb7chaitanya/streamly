@@ -8,12 +8,12 @@ export interface AuthRequest extends Request {
 }
 
 export const authMiddleware = async (req: AuthRequest, res: Response, next: NextFunction) => {
-    const token = req.cookies.token
+    const token = req.cookies?.token
     if (!token) {
         return res.status(401).json({ message: 'Unauthorized, missing token' })
     }
     try {
-        const verified = jwt.verify(token, JWT_SECRET || '') as JwtPayload
+        const verified = jwt.verify(token, JWT_SECRET || 'secret') as JwtPayload
         const user = await prisma.user.findUnique({
             where: {
                 id: verified.id
