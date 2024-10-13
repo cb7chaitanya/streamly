@@ -3,6 +3,7 @@ import { FaCheck, FaClock, FaCalendarTimes, FaWindowRestore, FaChartPie, FaMicro
 import { SiSolana, SiHomeassistantcommunitystore } from 'react-icons/si';
 import Navbar from '../components/Layout/Navbar';
 import Card from '../components/Pricing/Card';
+import Footer from '../components/Layout/Footer';
 
 const Pricing: React.FC = () => {
   return (
@@ -18,9 +19,7 @@ const Pricing: React.FC = () => {
             <Card icons={[<FaCheck className='mr-2 text-green-500' />, <FaCalendarTimes className='mr-2 text-green-500' />, <SiHomeassistantcommunitystore className='mr-2 text-green-500' />, <SiSolana className='mr-2 text-blue-500' />]} title="Premium Plan" description="For serious streamers" points={["All Free Plan features", "Unlimited streaming time", "Priority support", "Pay with Solana"]} buttonText='Pay via Solana'/>
           </div>
         </main>
-        <footer className="py-6 text-center text-gray-500 text-sm">
-          © 2023 Streamly. All rights reserved.
-        </footer>
+        <Footer />
       </div>
     </div>
   );

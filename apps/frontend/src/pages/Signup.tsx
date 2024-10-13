@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUser, FaEnvelope, FaLock } from 'react-icons/fa';
 import Navbar from '../components/Layout/Navbar';
+import Footer from '../components/Layout/Footer';
 
 const Signup: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -81,9 +82,7 @@ const Signup: React.FC = () => {
             </p>
           </div>
         </main>
-        <footer className="py-6 text-center text-gray-500 text-sm">
-          © 2023 Streamly. All rights reserved.
-        </footer>
+        <Footer />
       </div>
     </div>
   );
