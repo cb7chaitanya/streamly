@@ -7,23 +7,29 @@ export interface AuthRequest extends Request {
     userId?: string
 }
 
-export const authMiddleware = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const authMiddleware = async (req: AuthRequest, res: Response, next: NextFunction) : Promise<void> => {
     const token = req.cookies?.token
     if (!token) {
-        return res.status(401).json({ message: 'Unauthorized, missing token' })
+        res.status(401).json({ message: 'Unauthorized, missing token' })
+        return;
     }
     try {
         const verified = jwt.verify(token, JWT_SECRET || 'secret') as JwtPayload
+        console.log(verified)
         const user = await prisma.user.findUnique({
             where: {
-                id: verified.id
+                id: verified['userId']
             }
         })
         if(!user) {
-            return res.status(401).json({ message: 'Unauthorized, user not found' })
+            res.status(401).json({ message: 'Unauthorized, user not found' })
+            return;
         }
-        req.userId = verified.id
+        req.userId = verified['userId'] 
+        next();
     } catch (error) {
-        return res.status(403).json({ message: 'Invalid Token' })
+        console.log(error)
+        res.status(403).json({ message: 'Invalid Token' })
+        return;
     }
 }
