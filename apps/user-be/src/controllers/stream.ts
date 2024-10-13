@@ -163,6 +163,14 @@ export const getUserStreams = async (req: AuthRequest, res: Response) => {
                 userId: userId
             }
         })
+
+        if(streams.length === 0){
+            res.status(404).json({
+                message: "No Streams found",
+                success: false
+            })
+            return;
+        }
         
         res.status(200).json({
             message: "Streams retrieved successfully",

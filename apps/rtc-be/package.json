@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "tsc -b && node dist/index.js",
-    "rtc-be": "cd apps/rtc-be && npm run dev"
+    "rtc-be": "cd apps/rtc-be && npm run dev",
+    "build": "tsc -b"
   },
   "devDependencies": {
     "@types/ws": "^8.5.12",

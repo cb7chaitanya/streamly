@@ -9,6 +9,9 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password, name } = req.body;
     const { success } = signupSchema.safeParse(req.body);
+    console.log('name', name)
+    console.log('email', email)
+    console.log('password', password)
     if (!success) {
       res.status(400).json({ message: "Missing required fields" });
       return;
@@ -38,6 +41,7 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
     });
     return;
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Internal server error" });
     return;
   }
