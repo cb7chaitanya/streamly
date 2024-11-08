@@ -26,29 +26,3 @@ const Pricing: React.FC = () => {
 };
 
 export default Pricing;
-{/* <div className="bg-gray-800 bg-opacity-50 p-8 rounded-xl shadow-lg w-full md:w-96 border-2 border-blue-500">
-              <h3 className="text-3xl font-bold mb-4">Premium Plan</h3>
-              <p className="text-xl mb-6 text-gray-400">For serious streamers</p>
-              <ul className="mb-8">
-                <li className="flex items-center mb-2">
-                  <FaCheck className="text-green-500 mr-2" />
-                  <span>All Free Plan features</span>
-                </li>
-                <li className="flex items-center mb-2">
-                  <FaCheck className="text-green-500 mr-2" />
-                  <span>Unlimited streaming time</span>
-                </li>
-                <li className="flex items-center mb-2">
-                  <FaCheck className="text-green-500 mr-2" />
-                  <span>Priority support</span>
-                </li>
-                <li className="flex items-center mb-2">
-                  <SiSolana className="text-purple-500 mr-2" />
-                  <span>Pay with Solana</span>
-                </li>
-              </ul>
-              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-full text-xl transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center">
-                <FaWallet className="mr-2" />
-                Upgrade with Solana
-              </button>
-            </div> */}
