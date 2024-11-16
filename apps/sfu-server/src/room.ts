@@ -1,6 +1,7 @@
 import { Router } from 'mediasoup/node/lib/Router.js'
 import { Transport, Producer, AppData, Consumer } from 'mediasoup/node/lib/types.js'
 import { Peer } from './peer.js'
+import { sendMessage } from './lib/socket.js';
 
 interface ITransport {
     peerId: string;
@@ -60,6 +61,11 @@ export class Room {
         this.peers.push(peer);
     }
 
+    removePeer(peerId: string){
+        this.clear(peerId)
+        this.peers = this.peers.filter((peer) => peer.peerId !== peerId);
+    }
+
     addProducerTransport(transport: Transport, peerId: string){
         this.producerTransports.push({
             peerId, transport
@@ -94,6 +100,17 @@ export class Room {
      
     removeConsumer(peerId: string){
         this.consumers = this.removeItems(this.consumers, peerId, 'consumer');
+    }
+
+    informConsumers(newProducerId: string, producerId: string){
+        this.peers.forEach((peer) => {
+            if(peer.peerId !== newProducerId){
+                sendMessage(peer.socket, {
+                    type: 'new-producer',
+                    payload: { producerId }
+                })
+            }
+        })
     }
 
 }
