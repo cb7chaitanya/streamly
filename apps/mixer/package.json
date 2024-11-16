@@ -17,6 +17,8 @@
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "ffmpeg-static": "^5.2.0",
+    "google-auth-library": "^9.15.0",
+    "googleapis": "^144.0.0",
     "jsonwebtoken": "^9.0.2",
     "ws": "^8.18.0"
   }

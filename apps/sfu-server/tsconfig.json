@@ -7,10 +7,12 @@
     "esModuleInterop": true,
     "rootDir": "./src",
     "outDir": "./dist",
-    "incremental": true
+    "incremental": true,
+    "skipLibCheck": true
   },
   "include": [
-    "./src/*.ts"
+    "./src/*.ts",
+    "./src/**/*.ts"
   ],
   "exclude": [
     "node_modules"
