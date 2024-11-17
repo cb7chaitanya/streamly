@@ -1,6 +1,6 @@
 import { workerSettings, routerOptions } from "./rtc-config.js";
 import { createWorker } from "./lib/worker.js";
-import { AppData, Router, Worker } from "mediasoup/node/lib/types.js";
+import { Router, Worker } from "mediasoup/node/lib/types.js";
 import { EventEmitter } from "events";
 
 export class SFU extends EventEmitter {
@@ -29,37 +29,5 @@ export class SFU extends EventEmitter {
         }
     }
 
-    async createWebRtcTransport() {
-        if(!this.router){
-            throw new Error("Router is not initialized")
-        }
-
-        try{
-            const transport = await this.router.createWebRtcTransport({
-                listenInfos: [
-                    {
-                      protocol: "udp", // UDP Marker in mediasoup Protocol Type
-                      ip: "127.0.0.1", // Localhost config for local testing
-                      announcedAddress: '' //No announced address for local testing
-                    }
-                ],
-                enableUdp: true,
-                enableTcp: true,
-                preferUdp: true
-            })
-            console.log('Transport created', transport.id)
-            this.emit('transport-created', transport)
-
-            transport.on('dtlsstatechange', (dtlsState) => {
-                if(dtlsState === 'closed'){
-                    transport.close();
-                }
-            })
-            
-            return transport;
-        } catch(error){
-            console.log('Error creating transport', error)
-            return;
-        }
-    }
+   
 }
