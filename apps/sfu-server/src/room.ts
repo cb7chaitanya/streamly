@@ -89,6 +89,14 @@ export class Room {
     getProducers(){
         return this.producers
     }
+    
+    addProducer(producer: Producer, peerId: string){
+        this.producers.push({ producer, peerId })
+    }
+
+    addConsumer(consumer: Consumer, peerId: string){
+        this.consumers.push({ consumer, peerId })
+    }
 
     getConsumers(){
         return this.consumers
