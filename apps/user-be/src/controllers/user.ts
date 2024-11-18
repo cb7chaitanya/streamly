@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { Request, Response } from "express";
 import prisma from "@repo/db/client";
 import bcrypt from "bcrypt";
@@ -9,9 +9,6 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password, name } = req.body;
     const { success } = signupSchema.safeParse(req.body);
-    console.log('name', name)
-    console.log('email', email)
-    console.log('password', password)
     if (!success) {
       res.status(400).json({ message: "Missing required fields" });
       return;
@@ -93,4 +90,43 @@ export const signout = async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ message: "Internal server error" });
     return;
   }
+}
+
+export const refreshToken = async (req: RequestCustom, res: Response): Promise<void> => {
+  try {
+    const token = req.cookies['token']
+    console.log(token)
+    if (!token) {
+      res.status(401).json({ message: 'Unauthorized, missing token' })
+      return;
+    }
+    const verified = jwt.verify(token, JWT_SECRET || 'secret') as JwtPayload
+    const user = await prisma.user.findUnique({
+      where: {
+        id: verified['userId']
+      }
+    })
+    if(!user) {
+      res.status(401).json({ 
+        message: 'Unauthorized, user not found',
+        success: false
+      })
+      return;
+    }
+    const userId = user.id;
+    const newToken = jwt.sign({ userId }, JWT_SECRET || 'secret');
+    res.cookie("token", newToken);
+    res.status(200).json({
+      message: "Token refreshed successfully",
+      success: true,
+      token: newToken
+    });
+    return;
+  } catch (error) {
+    res.status(500).json({ 
+      message: "Internal server error",
+      success: false 
+    });
+    return;
+  } 
 }
