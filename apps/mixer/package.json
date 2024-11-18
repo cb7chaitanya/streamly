@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsc -b && node dist/index.js",
+    "dev": "node dist/index.js",
     "rtc-be": "cd apps/rtc-be && npm run dev",
     "build": "tsc -b"
   },
@@ -20,6 +20,7 @@
     "google-auth-library": "^9.15.0",
     "googleapis": "^144.0.0",
     "jsonwebtoken": "^9.0.2",
+    "ts-node": "^10.9.2",
     "ws": "^8.18.0"
   }
 }
