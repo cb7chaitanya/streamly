@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 import Provider from './components/Layout/Provider.tsx'
+import SFU from './pages/SFU.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -17,6 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path='/SFU' element={<SFU />} />
       </Routes>
     </Router>
     </Provider>
