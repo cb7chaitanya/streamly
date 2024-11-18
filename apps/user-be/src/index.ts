@@ -2,8 +2,15 @@ import express from 'express'
 import cors from 'cors'
 import primaryRouter from './routes/index.js'
 import cookiesParser from 'cookie-parser'
-
+import { Request as ExpressRequest } from 'express'
 const app = express()
+
+declare global{
+    interface RequestCustom extends ExpressRequest {
+        user?: any
+        userId?: string
+    }
+}
 
 app.use(express.json())
 
