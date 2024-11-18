@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Request } from 'express'
 import { WebSocketServer } from 'ws'
 import { createServer } from 'http'
 import { RoomManager } from './roomManager.js'
@@ -19,11 +19,14 @@ app.use(cors({
     origin: 'http://localhost:5173',
     credentials: true
 }))
+
 app.use(cookieParser())
 
 wss.on('connection', async function connection(ws, req) {
-    
-    const userId = extractUserId(req.headers.cookie) 
+    console.log('url', req.url)
+    const url = new URL(req.url!, `http://${req.headers.host}`)
+    const token = url.searchParams.get('token')
+    const userId = extractUserId(token!) 
     const worker = await createWorker(workerSettings)
     roomManager.addPeer(new Peer(ws, userId), worker)
 

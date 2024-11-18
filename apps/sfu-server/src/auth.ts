@@ -1,9 +1,12 @@
 import jwt from 'jsonwebtoken'
 import { JWT_SECRET } from './conf.js'
 import { Request } from 'express'
+import  { JwtPayload } from 'jsonwebtoken'
 
-export const extractUserId = (cookies: any) => {
-    const token = cookies['auth-token']
-    const decoded = jwt.verify(token, JWT_SECRET!)
+interface JwtPayload_custom extends JwtPayload {
+    userId: string
+}
+export const extractUserId = (token: string) => {
+    const decoded = jwt.verify(token, JWT_SECRET!) as JwtPayload_custom
     return decoded?.userId
 }
