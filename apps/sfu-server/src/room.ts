@@ -1,5 +1,4 @@
-import { Router } from 'mediasoup/node/lib/Router.js'
-import { Transport, Producer, AppData, Consumer } from 'mediasoup/node/lib/types.js'
+import { Transport, Producer, AppData, Consumer, Router } from 'mediasoup/node/lib/types.js'
 import { Peer } from './peer.js'
 import { sendMessage } from './lib/socket.js';
 
