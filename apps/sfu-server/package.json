@@ -4,7 +4,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -b",
+    "dev": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -17,9 +19,11 @@
     "express": "^4.21.1",
     "jsonwebtoken": "^9.0.2",
     "mediasoup": "^3.14.16",
+    "ts-node": "^10.9.2",
     "ws": "^8.18.0"
   },
   "devDependencies": {
+    "@repo/common": "*",
     "@types/express": "^5.0.0",
     "@types/ws": "^8.5.13",
     "typescript": "^5.6.3"
