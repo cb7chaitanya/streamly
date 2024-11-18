@@ -1,16 +1,30 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {FaEnvelope, FaLock } from 'react-icons/fa';
 import Navbar from '../components/Layout/Navbar';
 import Footer from '../components/Layout/Footer';
+import { USER_BACKEND_URL } from '../config/config';
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const navigate = useNavigate()
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle signup logic here
+    try{
+      await axios.post(`${USER_BACKEND_URL}/api/v1/user/signin`, {
+        email: email,
+        password: password
+      }, {
+        withCredentials: true
+      })
+      navigate('/SFU')
+    } catch(error){
+      toast.error(`Error logging in: ${error}`);
+    }
     console.log('Login submitted', { email, password });
   };
 
@@ -72,6 +86,7 @@ const Login: React.FC = () => {
             <Footer/>
         </div>
       </div>
+      <ToastContainer/>
     </div>
   );
 };
