@@ -6,7 +6,7 @@ import {
   Producer,
   RtpCapabilities,
   Transport,
-  Consumer
+  Consumer,
 } from "mediasoup-client/lib/types";
 import {
   SFUClientMessageSent,
@@ -22,11 +22,13 @@ export const useSFUClient = () => {
   const [device, setDevice] = useState<mediasoupClient.Device | null>(null);
   const [producer, setProducer] = useState<Producer<AppData> | null>(null);
   const [consumingTransports, setConsumingTransports] = useState<string[]>([]);
-  const [consumerTransport, setConsumerTransport] = useState<Transport<AppData> | null>(null);
+  const [consumerTransport, setConsumerTransport] =
+    useState<Transport<AppData> | null>(null);
   const [consumer, setConsumer] = useState<Consumer<AppData> | null>(null);
 
   const localVideoRef = useRef<HTMLVideoElement>(null);
-  const remoteVideoRef = useRef<HTMLVideoElement>(null);
+  const remoteVideoRefs = useRef<Map<string, HTMLVideoElement | null>>(new Map());
+  const [remoteStreams, setRemoteStreams] = useState<Map<string, MediaStream>>(new Map());
 
   const sendMessage = (message: SFUClientMessageSent) => {
     socket?.send(JSON.stringify(message));
@@ -119,7 +121,18 @@ export const useSFUClient = () => {
   const createProducerTransport = async (payload: {
     params: TransportPayload;
   }) => {
-    const transport = await device?.createSendTransport(payload.params);
+    if (!payload.params.id) {
+      console.error('Missing transport ID from server');
+      return;
+    }
+
+    const transport = await device?.createSendTransport({
+      id: payload.params.id,
+      iceParameters: payload.params.iceParameters,
+      iceCandidates: payload.params.iceCandidates,
+      dtlsParameters: payload.params.dtlsParameters,
+    });
+
     if (transport) {
       transportOnConnect(transport, true);
       transportOnProduce(transport);
@@ -146,13 +159,13 @@ export const useSFUClient = () => {
     const transport = await device?.createRecvTransport(payload.params);
     if (transport) {
       transportOnConnect(transport, false);
-      transportOnProduce(transport);
+      setConsumerTransport(transport);
       if (device && producer) {
-        const RtpCapabilities = device.rtpCapabilities;
+        const { rtpCapabilities } = device;
         sendMessage({
           type: SFUMessageType.CONSUME,
           payload: {
-            rtpCapabilities: RtpCapabilities,
+            rtpCapabilities,
           },
         });
       }
@@ -165,14 +178,19 @@ export const useSFUClient = () => {
       setConsumer(newConsumer);
 
       const stream = new MediaStream([newConsumer.track]);
-      if (remoteVideoRef.current) {
-        remoteVideoRef.current.srcObject = stream;
-        remoteVideoRef.current.play();
+      setRemoteStreams(prev => new Map(prev).set(data.id, stream));
 
-        if (localStream && localVideoRef.current) {
-          localVideoRef.current.srcObject = localStream;
-        }
+      const videoElement = remoteVideoRefs.current.get(data.id);
+      console.log('Remote video element:', videoElement, 'for id:', data.id);
+      if (videoElement) {
+        videoElement.srcObject = stream;
+        videoElement.play().catch(console.error);
       }
+
+      if (localStream && localVideoRef.current) {
+        localVideoRef.current.srcObject = localStream;
+      }
+
       sendMessage({
         type: SFUMessageType.RESUME,
         payload: { consumerId: data.id },
@@ -180,17 +198,22 @@ export const useSFUClient = () => {
     }
   };
 
-  const ProducerClose = () => {
-    if (consumerTransport) {
-      consumerTransport.close();
-      setConsumerTransport(null);
+  const ProducerClose = (consumerId: string) => {
+    setRemoteStreams(prev => {
+      const newMap = new Map(prev);
+      newMap.delete(consumerId);
+      return newMap;
+    });
+
+    const videoElement = remoteVideoRefs.current.get(consumerId);
+    if (videoElement) {
+      videoElement.srcObject = null;
+      remoteVideoRefs.current.delete(consumerId);
     }
+
     if (consumer) {
       consumer.close();
       setConsumer(null);
-    }
-    if (remoteVideoRef.current) {
-      remoteVideoRef.current.srcObject = null;
     }
   };
 
@@ -200,6 +223,7 @@ export const useSFUClient = () => {
     }
     socket.onmessage = function (event) {
       const message: SFUMessageClientRecieved = JSON.parse(event.data);
+      console.log('Received message:', message.type, message.payload);
       switch (message.type) {
         case SFUMessageType.JOIN_ROOM:
           const { rtpCapabilites } = message.payload;
@@ -219,7 +243,7 @@ export const useSFUClient = () => {
           break;
         }
         case SFUMessageType.NEW_PRODUCER: {
-          newConsumerTransport(message.payload.producerId);
+          newConsumerTransport(message.payload.newProducerId);
           break;
         }
         case SFUMessageType.SUBSCRIBED: {
@@ -227,12 +251,17 @@ export const useSFUClient = () => {
           break;
         }
         case SFUMessageType.PRODUCER_CLOSED: {
-          ProducerClose();
+          ProducerClose(message.payload.remoteProducerId);
           break;
         }
       }
-    }
-    }, [socket, device, producer, localStream, consumerTransport, consumer]);
+    };
+  }, [socket, device, producer, localStream, consumerTransport, consumer]);
 
-    return { localVideoRef, remoteVideoRef };
+  return { 
+    localVideoRef, 
+    localStream,
+    remoteStreams,
+    remoteVideoRefs 
+  };
 };

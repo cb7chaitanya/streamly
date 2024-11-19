@@ -20,7 +20,7 @@ export interface SubscribedServerSend {
 export interface NewProducerServerSend {
   type: SFUMessageType.NEW_PRODUCER;
   payload: {
-    producerId: string;
+    newProducerId: string;
   };
 }
 

@@ -109,15 +109,17 @@ export class Room {
         this.consumers = this.removeItems(this.consumers, peerId, 'consumer');
     }
 
-    informConsumers(newProducerId: string, producerId: string){
-        this.peers.forEach((peer) => {
-            if(peer.peerId !== newProducerId){
-                sendMessage(peer.socket, {
-                    type: 'new-producer',
-                    payload: { producerId }
-                })
-            }
-        })
+    informConsumers(peerId: string) {
+        this.producers.forEach(({ producer: { id } }) => {
+            this.peers.forEach((peer) => {
+                if (peer.peerId !== peerId) {
+                    sendMessage(peer.socket, {
+                        type: 'newProducer',
+                        payload: { producerId: id }
+                    });
+                }
+            });
+        });
     }
 
 }

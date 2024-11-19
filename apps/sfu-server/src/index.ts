@@ -2,7 +2,6 @@ import express, { Request } from 'express'
 import { WebSocketServer } from 'ws'
 import { createServer } from 'http'
 import { RoomManager } from './roomManager.js'
-import url from 'url'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import { extractUserId } from './auth.js'
@@ -23,7 +22,6 @@ app.use(cors({
 app.use(cookieParser())
 
 wss.on('connection', async function connection(ws, req) {
-    console.log('url', req.url)
     const url = new URL(req.url!, `http://${req.headers.host}`)
     const token = url.searchParams.get('token')
     const userId = extractUserId(token!) 

@@ -17,29 +17,39 @@ export const useSFUSocket = () => {
             console.log("WebSocket connection opened.");
 
             try {
+                const cameraPermission = await navigator.permissions.query({ name: "camera" as PermissionName });
+                const microphonePermission = await navigator.permissions.query({ name: "microphone" as PermissionName });
+            
+                if (cameraPermission.state === "denied" || microphonePermission.state === "denied") {
+                  console.error("User did not grant permission to access camera and microphone.");
+                  return;
+                }
+            
                 const mediaStream = await navigator.mediaDevices.getUserMedia({
-                    audio: true,
-                    video: true,
+                  audio: true,
+                  video: true,
                 });
                 setLocalStream(mediaStream);
-            } catch (error) {
+
+                ws.send(
+                    JSON.stringify({
+                        type: SFUMessageType.JOIN_ROOM,
+                        payload: {
+                            roomId: '1',
+                        },
+                    })
+                );
+                console.log("Local stream:", mediaStream);
+              } catch (error) {
                 console.error(`Error getting local stream: ${error}`);
                 ws.close();
                 return;
             }
-
-            ws.send(
-                JSON.stringify({
-                    type: SFUMessageType.JOIN_ROOM,
-                    payload: {
-                        roomId: '1',
-                    },
-                })
-            );
+            
 
             setSocket(ws);
         };
-
+        
         ws.onclose = () => {
             console.log("WebSocket connection closed.");
             setSocket(null);
