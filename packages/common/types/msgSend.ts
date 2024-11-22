@@ -70,6 +70,13 @@ export interface ProducerClosedServerSend {
   payload: { remoteProducerId: string };
 }
 
+export interface UnauthorizedServerSend {
+  type: SFUMessageType.UNAUTHORIZED;
+  payload: {
+    message: string;
+  }
+}
+
 export type SFUMessageServerSent =
   | ConsumerConnectedServerSend
   | ProducerConnectedServerSend
@@ -81,6 +88,7 @@ export type SFUMessageServerSent =
   | CreateConsumerTransportServerSend
   | ProducedServerSend
   | GetProducersServerSend
-  | ProducerClosedServerSend;
+  | ProducerClosedServerSend
+  | UnauthorizedServerSend;
 
 export type SFUMessageClientRecieved = SFUMessageServerSent;

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node dist/index.js",
+    "dev": "npx tsx src/index.ts",
     "rtc-be": "cd apps/rtc-be && npm run dev",
     "build": "tsc -b"
   },

@@ -15,4 +15,5 @@ export enum SFUMessageType {
     NEW_PRODUCER = 'newProducer',
     ROOM_FULL = 'roomFull',
     PRODUCER_CLOSED = 'producerClosed',
+    UNAUTHORIZED = 'unauthorized'
 }
